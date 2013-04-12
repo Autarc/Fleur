@@ -18,7 +18,7 @@ properties - to aim and hit !
 
 Can both player work together and grow up the plants, before they are running out of time ?
 
-``
+```
                                      oooooo
                                     oooooooo
                                      oooooo
@@ -33,7 +33,7 @@ ________________________________________________________________________________
 
                               Time:   02:15
 
-``
+```
 
 ## Rules
 
