@@ -5,6 +5,9 @@ A Physical Simulation for two Players.
 
 _Latest Release: 0.1.0 ([changelog](https://github.com/Autarc/Fleur/blob/master/HISTORY.md))_
 
+![Fleur](https://github.com/Autarc/Fleur/raw/master/material/v0.1.0_2013-04-12.png)
+
+
 ## Introduction
 
 During my studies in *Advanced Game Physics* we got the chance to create a simple game to visualize
