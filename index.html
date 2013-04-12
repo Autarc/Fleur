@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta http-equiv="content-type" content="text/html,charset=utf-8" />
+
+    <title>:: Fleur ::</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <style>
+
+        body {
+
+            width       : 100%;
+            height      : 100%;
+            margin      : 0;
+            padding     : 0;
+            background  : #222;
+        }
+
+        .wrapper {
+
+            width   : 60%;
+            margin  : 100px auto;
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <div id="container" class="wrapper"></div>
+
+    <script src="vendors/processing-1.4.1.min.js"></script>
+
+    <script>
+
+        var canvas      = document.createElement('canvas'),
+
+            elements    =   [
+
+              '01_ground'   ,
+              '02_silo'     ,
+              '03_cannon'   ,
+              '04_wall'     ,
+              '05_plant'    ,
+              '06_cloud'    ,
+              '07_bullet'
+
+                            ].map( wrap('elements/') ),
+
+            gui         =   [
+
+              '01_label'     ,
+              '02_button'    ,
+              '03_timer'     ,
+              '04_score'     ,
+
+              '05_angle'     ,
+              '06_pressure'  ,
+              '07_volume'
+
+                            ].map( wrap('gui/') ),
+
+
+            sketch      =   [
+
+                '_element'  ,
+                '_gui'      ,
+                'events'    ,
+                'game'      ,
+                'player'    ,
+                'menu'      ,
+                'debug'     ,
+                'main'
+
+                            ].concat( elements )
+                             .concat( gui )
+                             .map( wrap( 'processing/', '.pde' ) )
+                             .join(' ');
+
+
+        canvas.dataset.processingSources = sketch;
+
+        document.getElementById('container').appendChild( canvas );
+
+
+        function wrap ( prefix, suffix ) {
+
+            return function ( file ) { return [ prefix, file, suffix ].join(''); };
+        }
+
+    </script>
+
+</body>
+</html>
