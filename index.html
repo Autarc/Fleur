@@ -1,74 +1,103 @@
-<!doctype html>
-<html>
-  <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Fleur by Autarc</title>
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1 class="header">Fleur</h1>
-        <p class="header">A Physical Simulation for two Players</p>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta http-equiv="content-type" content="text/html,charset=utf-8" />
 
-        <ul>
-          <li class="download"><a class="buttons" href="https://github.com/Autarc/Fleur/zipball/master">Download ZIP</a></li>
-          <li class="download"><a class="buttons" href="https://github.com/Autarc/Fleur/tarball/master">Download TAR</a></li>
-          <li><a class="buttons github" href="https://github.com/Autarc/Fleur">View On GitHub</a></li>
-        </ul>
+    <title>:: Fleur ::</title>
 
-        <p class="header">This project is maintained by <a class="header name" href="https://github.com/Autarc">Autarc</a></p>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <style>
+
+        body {
+
+            width       : 100%;
+            height      : 100%;
+            margin      : 0;
+            padding     : 0;
+            background  : #222;
+        }
+
+        .wrapper {
+
+            width   : 60%;
+            margin  : 100px auto;
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <div id="container" class="wrapper"></div>
+
+    <script src="vendors/processing-1.4.1.min.js"></script>
+
+    <script>
+
+        var canvas      = document.createElement('canvas'),
+
+            elements    =   [
+
+              '01_ground'   ,
+              '02_silo'     ,
+              '03_cannon'   ,
+              '04_wall'     ,
+              '05_plant'    ,
+              '06_field'    ,
+              '07_cloud'    ,
+              '08_bullet'
+
+                            ].map( wrap('elements/') ),
+
+            gui         =   [
+
+              '01_label'     ,
+              '02_button'    ,
+              '03_timer'     ,
+              '04_score'     ,
+
+              '05_angle'     ,
+              '06_pressure'  ,
+              '07_volume'
+
+                            ].map( wrap('gui/') ),
 
 
-      </header>
-      <section>
-        <h1>Fleur - Physics to Growth</h1>
+            sketch      =   [
 
-<p>A Physical Simulation for two Players.</p>
+                '_element'  ,
+                '_gui'      ,
+                'input'    ,
+                'game'      ,
+                'player'    ,
+                'menu'      ,
+                'debug'     ,
+                'main'
 
-<p><em>Latest Release: 0.1.0 (<a href="https://github.com/Autarc/Fleur/blob/master/HISTORY.md">changelog</a>)</em></p>
+                            ].concat( elements )
+                             .concat( gui )
+                             .map( wrap( 'processing/', '.pde' ) )
+                             .join(' ');
 
-<p><img src="https://github.com/Autarc/Fleur/raw/master/material/v0.1.5_2013-04-14.png" alt="Fleur"></p>
 
-<h2>Introduction</h2>
+        canvas.dataset.processingSources = sketch;
 
-<p>During my studies in <em>Advanced Game Physics</em> we got the chance to create a simple game to visualize
-the kinematic behavior of interactive objects. Besides the restriction of using <a href="https://en.wikipedia.org/wiki/Processing.js">Processing</a>, I wanted to make a co-operative casual game with a hotseat mode.</p>
+        document.getElementById('container').appendChild( canvas );
 
-<ul>
-<li>Site: <a href="https://fleur.github.io">Game</a>
-</li>
-</ul><h2>Info</h2>
 
-<p>TODO</p>
+        function wrap ( prefix, suffix ) {
 
-<ul>
-<li><a href="https://github.com/Autarc/Fleur/blob/master/material/MANUAL.md">Manual</a></li>
-</ul><h2>Features</h2>
+            return function ( file ) { return [ prefix, file, suffix ].join(''); };
+        }
 
-<ul>
-<li>based on <a href="http://processingjs.org/">Processing.js</a>
-</li>
-<li>variable degree of difficulty</li>
-</ul><h2>License</h2>
+    </script>
 
-<p>Copyright (c) 2013, Stefan Dühring</p>
-
-<p>Distributed under <a href="https://github.com/Autarc/Fleur/blob/master/LICENSE">MIT License</a>.</p>
-      </section>
-      <footer>
-        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
-      </footer>
-    </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-		
-  </body>
+</body>
 </html>
