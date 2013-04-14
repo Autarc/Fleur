@@ -49,13 +49,15 @@ class Bullet implements Element {
     }
 
 
-    // prevent rendering
+    // prevent rendering (negotiation didn't worked...)
     void checkCleanUp(){
 
-      if (  !(  posX > 0            ||
-                posX < SCREEN_WIDTH ||
-                posY > 0            ||
-                posY < SCREEN_HEIGHT    )  ) {
+      if (  posX < 0              ||
+            posX > SCREEN_WIDTH   ||
+            posY < 0              ||
+            posY > SCREEN_HEIGHT    ) {
+
+        game.currentPlayer = game.players[ ( game.currentPlayer.id == 0 ) ? 1 : 0 ]
 
         ready = false;
       }
