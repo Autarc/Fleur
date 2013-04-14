@@ -23,11 +23,14 @@ colors[] PLAYER_COLORS = {
 class Player implements Element {
 
 
-  int id,         // id of the player
-      offset,     // x-offset
-      num;        // amount of elements
+  int id,             // id of the player
+      playerPosX,     // x-offset
+      numElements;    // amount of elements
 
   Elements[] elements;  // elements of the player
+
+  // internal references
+  Silo silo; Cannon cannon; Wall wall;
 
 
   // ------------------------------------ //
@@ -35,8 +38,8 @@ class Player implements Element {
 
   Player ( int playerID ) {
 
-    id      = playerID;
-    offset  = PLAYER_POSX[ id ];
+    id          = playerID;
+    playerPosX  = PLAYER_POSX[ id ];
 
     this.init();
   }
@@ -47,22 +50,27 @@ class Player implements Element {
 
   void init(){
 
-    elements = {
+    silo    = new Silo    ( !id, playerPosX ); // e.g. 0 -> false -> ! -> true, first player -> left
+    cannon  = new Cannon  ( !id, playerPosX );
+    wall    = new Wall    ( !id, playerPosX );
+    bullet  = new Bullet  ();
 
-      new Silo    ( !id, offset ), // e.g. 0 -> false -> ! -> true, first player -> left
-      new Cannon  ( !id, offset ),
-      new Wall    ( !id, offset )
-    };
+    elements = { silo, cannon, wall, bullet };
   }
 
+
+    void shoot(){
+
+      bullet.init( cannon );
+    }
 
   // ------------------------------------ //
 
 
   void update(){
 
-    // num = elements.length;
-    // while ( num-- ) elements[ num ].update();
+    numElements = elements.length;
+    while ( numElements-- ) elements[ numElements ].update();
   }
 
 
@@ -73,8 +81,8 @@ class Player implements Element {
 
     fill( PLAYER_COLORS[ id ] );
 
-    num = elements.length;
-    while ( num-- ) elements[ num ].draw();
+    numElements = elements.length;
+    while ( numElements-- ) elements[ numElements ].draw();
   }
 
 

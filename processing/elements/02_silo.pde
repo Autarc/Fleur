@@ -14,22 +14,24 @@ color SILO_COLOR      = #35383A,
 // Constructor
 class Silo implements Element {
 
-  int dx,
+  int posX,
       left;
 
 
   // ------------------------------------ //
 
-  Silo ( boolean side, int offset ) {
+  Silo ( boolean side, int playerPosX ) {
 
     left = side;
 
-    dx   = side ? offset : ( offset - SILO_WIDTH );
+    posX = side ? playerPosX                :
+                  playerPosX - SILO_WIDTH;
   }
+
 
   // ------------------------------------ //
 
-  void update(){
+  void update ( float delta ) {
 
 
   }
@@ -39,9 +41,9 @@ class Silo implements Element {
   void draw(){
 
     fill( SILO_COLOR );
-    rect( dx, SILO_POSY, SILO_WIDTH, SILO_HEIGHT );
+    rect( posX, SILO_POSY, SILO_WIDTH, SILO_HEIGHT );
 
     fill( WATER_COLOR );
-    rect( dx + WATER_WIDTH/2, SILO_POSY, WATER_WIDTH, WATER_HEIGHT );
+    rect( posX + WATER_WIDTH/2, SILO_POSY, WATER_WIDTH, WATER_HEIGHT );
   }
 }

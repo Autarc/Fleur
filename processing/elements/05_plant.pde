@@ -1,8 +1,7 @@
 // Configuration
-int   PLANT_WIDTH   = 50,
-      PLANT_HEIGHT  = 20,
+int   PLANT_HEIGHT  = 20,
 
-      PLANT_POSX    = (SCREEN_WIDTH/6)*2, // temp value
+      PLANT_POSX    = WALL_POSX + WALL_WIDTH,
       PLANT_POSY    = GROUND_POSY - PLANT_HEIGHT;
 
 color PLANT_COLOR   = #FFCC00;
@@ -11,18 +10,23 @@ color PLANT_COLOR   = #FFCC00;
 // Constructor
 class Plant implements Element {
 
-  int dx;
+
+  int posX, width;
 
   // ------------------------------------ //
 
-  Plant( int num ) {
+  Plant( int PLANT_WIDTH, int num ) {
 
-    dx = num * PLANT_WIDTH * 2;
+    width = PLANT_WIDTH;
+
+    int offset = floor(width/2);
+
+    posX = PLANT_POSX + offset + ( 2 * offset + width ) * num;
   }
 
   // ------------------------------------ //
 
-  void update(){
+  void update ( float delta ) {
 
 
   }
@@ -33,6 +37,6 @@ class Plant implements Element {
 
     fill( PLANT_COLOR );
 
-    rect( PLANT_POSX + dx, PLANT_POSY, PLANT_WIDTH, PLANT_HEIGHT );
+    rect( posX, PLANT_POSY, width, PLANT_HEIGHT );
   }
 }

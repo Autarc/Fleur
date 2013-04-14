@@ -12,22 +12,22 @@ color WALL_COLOR  = #838053;
 // Constructor
 class Wall implements Element {
 
-  int dx,
+  int posX,
       left;
 
   // ------------------------------------ //
 
-  Wall ( boolean side, int offset ) {
+  Wall ( boolean side, int playerPosX ) {
 
     left  = side;
 
-    dx    = side ? offset : ( offset - WALL_WIDTH );
+    posX  = side ?  playerPosX + WALL_POSX                  :
+                    playerPosX - WALL_POSX - WALL_WIDTH;
   }
 
   // ------------------------------------ //
 
-  void update(){
-
+  void update ( float delta ) {
 
   }
 
@@ -37,9 +37,7 @@ class Wall implements Element {
 
     fill( WALL_COLOR );
 
-    rect( dx + ( left ? WALL_POSX : -WALL_POSX ),
-
-          WALL_POSY, WALL_WIDTH, WALL_HEIGHT );
+    rect( posX, WALL_POSY, WALL_WIDTH, WALL_HEIGHT );
   }
 
 }

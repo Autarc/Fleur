@@ -10,28 +10,49 @@ int CANNON_WIDTH  = SILO_WIDTH/2,
 // Constructor
 class Cannon implements Element {
 
-
-  int dx,     // x-offset
-      rad,    // angle/degree
+  int posX, posY,
+      rad,
       left;
 
   // ------------------------------------ //
 
-  Cannon ( boolean side, int offset ) {
+  Cannon ( boolean side, int playerPosX ) {
 
     left  = side;
 
-    dx    = side ? offset : ( offset - CANNON_WIDTH );
+    posX  = side ? playerPosX + CANNON_POSX                 :
+                   playerPosX - CANNON_POSX - CANNON_WIDTH;
 
+    posY  = CANNON_POSY;
 
-    float deg = 45.0;
-
-    rad = radians( left ? deg : 2*PI - deg );
+    setAngle( 55.0 );
   }
+
+
+    void setAngle ( float deg ) {
+
+      rad = radians( left ? deg : TWO_PI - deg );
+    }
+
+
+    void increaseAngle() {
+
+      int step = 1;
+
+      rad = radians( degrees(rad) + step );
+    }
+
+    void decreaseAngle() {
+
+      int step = 1;
+
+      rad = radians( degrees(rad) - step );
+    }
+
 
   // ------------------------------------ //
 
-  void update(){
+  void update ( float delta ) {
 
 
   }
@@ -44,17 +65,25 @@ class Cannon implements Element {
 
     pushMatrix();
 
-      // translate( SCREEN_WIDTH/2, SCREEN_HEIGHT/2 );
+      // ToDo:
+      //
+      //  - Check why second player got higher ....
+      //  - still false drawing/moving,as not rotate around the center.... ?
 
-      // rotate( rad );
+      turn();
 
-      // translate( -SCREEN_WIDTH/2, -SCREEN_HEIGHT/2 );
-
-      rect( dx + ( left ? CANNON_POSX : -CANNON_POSX ),
-
-            CANNON_POSY, CANNON_WIDTH, CANNON_HEIGHT );
+      rect( posX, posY, CANNON_WIDTH, CANNON_HEIGHT );
 
     popMatrix();
   }
 
+
+    void turn() {
+
+      translate( posX, posY );
+
+      rotate( rad );
+
+      translate( -posX, -posY );
+    }
 }

@@ -15,7 +15,7 @@ class Button implements Element {
 
   // ------------------------------------ //
 
-	void update(){
+	void update ( float delta) {
 
 
 	}

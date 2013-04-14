@@ -1,9 +1,9 @@
 // Configuration
-int   CLOUD_RADIUS   = 50,
-      CLOUD_CENTERX  = (SCREEN_WIDTH/2 - CLOUD_RADIUS/2),
-      CLOUD_CENTERY  = CLOUD_RADIUS;
+int   CLOUD_RADIUS  = 50,
+      CLOUD_CENTERX = (SCREEN_WIDTH/2 - CLOUD_RADIUS/2),
+      CLOUD_CENTERY = CLOUD_RADIUS;
 
-color CLOUD_COLOR  = #698AEC;
+color CLOUD_COLOR   = #698AEC;
 
 
 // Constructor
@@ -12,14 +12,11 @@ class Cloud implements Element {
 
   // ------------------------------------ //
 
-  Cloud(){
-
-
-  }
+  Cloud(){}
 
   // ------------------------------------ //
 
-  void update(){
+  void update ( float delta ) {
 
 
   }

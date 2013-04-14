@@ -2,23 +2,38 @@
 int   SCREEN_WIDTH    = 800,
       SCREEN_HEIGHT   = 400,
 
-      FRAME_RATE      =  20;
+      FRAME_RATE      =  60,
+      FRAME_COUNTER   =   0;
 
 
 color GAME_COLOR_BACKGROUND = #eeeeee;
 
 
+// Difficulty
+int   DIFFICULTY_PLANTS = 3,
+      DIFFICULTY_TIME   = DIFFICULTY_PLANTS * 60;
+
+
+
+
 // Constructor
 class Game {
 
+  int         numPlayers,   // amount of players
+              numElements,  // amount of elements
+              numGUI;       // amount of gui parts
 
-  int   numPlayers,   // amount of players
-        numElements,  // amount of elements
-        numGUI;       // amount of gui parts
-
-  Player[]    players;  // different players
-  Elements[]  elements; // neutral elements
+  Player[]    players;      // different players
+  Elements[]  elements;     // neutral elements
   Elements[]  gui;
+
+  // internal
+  Cloud       cloud;
+  Field       field;
+  Player      currentPlayer;
+  Timer       timer;
+  Score       score;
+
 
 
   // ------------------------------------ //
@@ -29,6 +44,8 @@ class Game {
     this.setup();
     this.init();
     this.addEventHandler();
+
+    // this.start();
   }
 
 
@@ -39,6 +56,7 @@ class Game {
     size( SCREEN_WIDTH, SCREEN_HEIGHT );
     frameRate( FRAME_RATE );
 
+    noStroke();
 
     clear();
   }
@@ -56,23 +74,17 @@ class Game {
 
     void createElements(){
 
-      elements = {
+      cloud = new Cloud();
 
-        new Ground(),
-        new Cloud(),
+      field = new Field();
 
-
-        // setup - menu
-        new Plant(0),
-        new Plant(1),
-        new Plant(2)
-      };
+      elements = { new Ground(), cloud, field };
     }
 
 
     void createPlayers(){
 
-      num   = 2;
+      num     = 2;
 
       players = new Player[ num ];
 
@@ -80,16 +92,17 @@ class Game {
 
         players[ i ] = new Player( i );
       }
+
+      currentPlayer = players[ 0 ];
     }
 
 
     void createGUI(){
 
-      gui = {
+      timer = new Timer();
+      score = new Score();
 
-        new Timer(),
-        new Score()
-      };
+      gui = { timer, score };
     }
 
 
@@ -99,10 +112,30 @@ class Game {
 
   void addEventHandler(){
 
-    // see events.pde
-    // button handler
-    // schub regler
-    // (*) menu ?
+    // Mouse:
+    // Handler will be attach on the specific object
+
+
+    // Keyboard:
+    onKey('ENTER', start );
+
+    onKey('LEFT',  test_left  );
+    onKey('RIGHT', test_right );
+    onKey('SPACE', test_space );
+  }
+
+
+    void test_left(){  currentPlayer.cannon.increaseAngle();  }
+    void test_right(){ currentPlayer.cannon.decreaseAngle();  }
+    void test_space(){ currentPlayer.shoot();                 }
+
+  // ------------------------------------ //
+
+  void start(){
+
+    field.init( DIFFICULTY_PLANTS );
+    score.init( DIFFICULTY_PLANTS );
+    timer.init( DIFFICULTY_TIME   );
   }
 
 
@@ -110,23 +143,28 @@ class Game {
 
   void render(){
 
-    clear();
+    FRAME_COUNTER++;
 
-    update();
+    float dt = frameCount;// 1/frameCount;
+
+    update( dt );
+
+    clear();
 
     draw();
   }
 
-    void update(){
 
-      // numElements = elements.length;
-      // while ( numElements-- ) elements[ numElements ].update();
+    void update ( float delta ) {
 
-      // while ( numPlayers-- ) players[ numPlayers ].update();
-      // numPlayers = players.length;
+      numElements = elements.length;
+      while ( numElements-- ) elements[ numElements ].update( delta );
 
-      // numGUI = gui.length;
-      // while ( numGUI-- ) gui[ numGUI ].update();
+      while ( numPlayers-- ) players[ numPlayers ].update( delta );
+      numPlayers = players.length;
+
+      numGUI = gui.length;
+      while ( numGUI-- ) gui[ numGUI ].update( delta );
     }
 
 
@@ -141,7 +179,6 @@ class Game {
       numGUI = gui.length;
       while ( numGUI-- ) gui[ numGUI ].draw();
     }
-
 
 
   // ------------------------------------ //
