@@ -1,9 +1,8 @@
 // Configuration
-int   WALL_WIDTH  = SILO_WIDTH,
-      WALL_HEIGHT = SILO_HEIGHT/2,
+int   WALL_WIDTH  = getModel(   1 ),
+      WALL_HEIGHT = getModel( 2.5 ),
 
-      WALL_POSX   = CANNON_POSX + CANNON_WIDTH,
-
+      WALL_POSX   = CANNON_POSX + CANNON_WIDTH * 3,
       WALL_POSY   = GROUND_POSY - WALL_HEIGHT;
 
 color WALL_COLOR  = #838053;

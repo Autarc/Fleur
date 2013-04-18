@@ -1,6 +1,7 @@
 // Configuration
-int   CLOUD_RADIUS  = 50,
-      CLOUD_CENTERX = (SCREEN_WIDTH/2 - CLOUD_RADIUS/2),
+int   CLOUD_RADIUS  = getModel( 2 ),        // 2m
+
+      CLOUD_CENTERX = SCREEN_WIDTH/2,
       CLOUD_CENTERY = CLOUD_RADIUS;
 
 color CLOUD_COLOR   = #698AEC;
