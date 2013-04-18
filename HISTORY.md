@@ -1,3 +1,10 @@
+## 0.2.0 / 2013-04-18
+
+* fix cannon position & rotation
+* add helper functions
+* translate positions into cartesian coordinates
+* apply scaling model-size
+
 ## 0.1.5 / 2013-04-14
 
 * enable input handler (keyboard + click)

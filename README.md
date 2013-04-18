@@ -3,9 +3,9 @@ Fleur - Physics to Growth
 
 A Physical Simulation for two Players.
 
-_Latest Release: 0.1.5 ([changelog](https://github.com/Autarc/Fleur/blob/master/HISTORY.md))_
+_Latest Release: 0.2.0 ([changelog](https://github.com/Autarc/Fleur/blob/master/HISTORY.md))_
 
-![Fleur](https://github.com/Autarc/Fleur/raw/master/material/v0.1.5_2013-04-14.png)
+![Fleur](https://github.com/Autarc/Fleur/raw/master/material/v0.2.0_2013-04-18.png)
 
 
 ## Introduction
@@ -17,6 +17,9 @@ the kinematic behavior of interactive objects. Besides the restriction of using 
 
 
 ## Info
+
+The debugging mode is by default activated - therefore a grid will be displayed on the canvas
+and the coordinates of the mouse movement will be tracked. To disable the debugging press ```1```.
 
 TODO
 
