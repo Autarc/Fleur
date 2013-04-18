@@ -1,15 +1,17 @@
 // Configuration
-int		BULLET_RADIUS	= 30;
+int		BULLET_RADIUS	= getModel( 0.5 );       // 0.5m
 color	BULLET_COLOR	= #00CCFF;
 
 
 // Constructor
 class Bullet implements Element {
 
-  boolean ready;
 
-  int posX,
-      posY;
+  int posX, posY,
+      rad,
+      left;
+
+  boolean ready;
 
   // ------------------------------------ //
 
@@ -18,12 +20,14 @@ class Bullet implements Element {
     ready = false;
 	}
 
+
     void init ( Cannon cannon ){
 
-      posX  = cannon.posX;
-      posY  = cannon.posY;
+      posX  = cannon.posX;// * cannon.rad;
+      posY  = cannon.posY;// * cannon.rad;
 
       rad   = cannon.rad;
+      left  = cannon.left;
 
       ready = true;
     }
@@ -42,7 +46,7 @@ class Bullet implements Element {
 
     void calculateCurve ( delta ) {
 
-        posX += 1;
+        posX += left ? 1 : -1;
         posY -= 1;
 
         checkCleanUp();

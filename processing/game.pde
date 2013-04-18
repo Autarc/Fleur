@@ -3,10 +3,13 @@ int   SCREEN_WIDTH    = 800,
       SCREEN_HEIGHT   = 400,
 
       FRAME_RATE      =  60,
-      FRAME_COUNTER   =   0;
+      FRAME_COUNTER   =   0,
 
+      SCALE_M         =  30;    // scale factor: 40px = 1m    = cannon: 2-3m
 
 color GAME_COLOR_BACKGROUND = #eeeeee;
+
+
 
 
 // Difficulty
@@ -35,9 +38,7 @@ class Game {
   Score       score;
 
 
-
   // ------------------------------------ //
-
 
   Game(){
 
@@ -45,7 +46,7 @@ class Game {
     this.init();
     this.addEventHandler();
 
-    // this.start();
+    this.start();
   }
 
 
@@ -55,6 +56,8 @@ class Game {
 
     size( SCREEN_WIDTH, SCREEN_HEIGHT );
     frameRate( FRAME_RATE );
+
+    smooth();
 
     noStroke();
 
@@ -78,7 +81,7 @@ class Game {
 
       field = new Field();
 
-      elements = { new Ground(), cloud, field };
+      elements = { field, cloud, new Ground() }; // reverse execution
     }
 
 
@@ -102,7 +105,7 @@ class Game {
       timer = new Timer();
       score = new Score();
 
-      gui = { timer, score };
+      gui = { score, timer }; // reverse execution
     }
 
 
@@ -118,6 +121,7 @@ class Game {
 
     // Keyboard:
     onKey('ENTER', start );
+    onKey('1',     test_debug );
 
     onKey('LEFT',  test_left  );
     onKey('RIGHT', test_right );
@@ -125,9 +129,10 @@ class Game {
   }
 
 
-    void test_left(){  currentPlayer.cannon.increaseAngle();  }
-    void test_right(){ currentPlayer.cannon.decreaseAngle();  }
-    void test_space(){ currentPlayer.shoot();                 }
+    void test_debug() { debug = !debug };
+    void test_left()  { currentPlayer.cannon.decreaseAngle();  }
+    void test_right() { currentPlayer.cannon.increaseAngle();  }
+    void test_space() { currentPlayer.shoot();                 }
 
   // ------------------------------------ //
 
@@ -178,6 +183,8 @@ class Game {
 
       numGUI = gui.length;
       while ( numGUI-- ) gui[ numGUI ].draw();
+
+      if ( debug ) debugDraw();
     }
 
 

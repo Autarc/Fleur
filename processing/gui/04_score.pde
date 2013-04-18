@@ -36,6 +36,21 @@ class Score implements Element {
       ready = true;
     }
 
+
+    void increase(){
+
+      currentScore++;
+
+      if ( currentScore === maxScore ) win();
+    }
+
+
+
+    void win(){
+
+      log('win');
+    }
+
   // ------------------------------------ //
 
   void update ( float delta ) {

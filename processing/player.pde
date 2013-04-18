@@ -55,7 +55,7 @@ class Player implements Element {
     wall    = new Wall    ( !id, playerPosX );
     bullet  = new Bullet  ();
 
-    elements = { silo, cannon, wall, bullet };
+    elements = { bullet, wall, cannon, silo }; // reverse execution
   }
 
 

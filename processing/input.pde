@@ -93,7 +93,7 @@ int[] defaultASCII = {
   9,        // TAB
   10, 13,   // ENTER
   16,       // SHIFT
-  27,       // ESC
+  27,       // ESC      -- doesnt work ?
   32,       // SPACE
   46        // DEL
 };
