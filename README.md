@@ -3,9 +3,9 @@ Fleur - Physics to Growth
 
 A Physical Simulation for two Players.
 
-_Latest Release: 0.2.0 ([changelog](https://github.com/Autarc/Fleur/blob/master/HISTORY.md))_
+_Latest Release: 0.3.0 ([changelog](https://github.com/Autarc/Fleur/blob/master/HISTORY.md))_
 
-![Fleur](https://github.com/Autarc/Fleur/raw/master/material/v0.2.0_2013-04-18.png)
+![Fleur](https://github.com/Autarc/Fleur/raw/master/material/v0.3.0_2013-04-29.png)
 
 
 ## Introduction
