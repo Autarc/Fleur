@@ -53,9 +53,7 @@ class Score implements Element {
 
   // ------------------------------------ //
 
-  void update ( float delta ) {
-
-  }
+  void update ( float delta ) {}
 
   // ------------------------------------ //
 

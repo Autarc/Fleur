@@ -1,14 +1,9 @@
 // Configuration
 
-boolean debug = !false;
-
-
-
-
+boolean debug = false;
 
 // debug setup
-if ( debug ) println('[Debug]');
-
+if ( debug ) println("[Debug]\n\n");
 
 
 void log ( String text ) {
@@ -25,7 +20,8 @@ void mouseMoved(){
 
   if ( !debug ) return;
 
-  log( "mouse( " + mouseX + " | " + mouseY + " ) - cartesian( " + coordX(mouseX) + " | " + coordY(mouseY) + " )");
+  // log( "mouse( " + mouseX + " | " + mouseY + " ) : re-draw( " + drawX(mouseX) + " | " + drawY(mouseY) + " )");
+  // log( "mouse( " + drawX( coordX(mouseX)) + " | " + drawY( coordY(mouseY) ) + " ) - cartesian( " + coordX(mouseX) + " | " + coordY(mouseY) + " )");
 }
 
 
@@ -33,7 +29,7 @@ void debugDraw(){
 
   // fill('0x000000');
 
-  showGrid();
+  // showGrid();
 }
 
 

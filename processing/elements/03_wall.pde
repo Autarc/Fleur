@@ -1,9 +1,9 @@
 // Configuration
-int   WALL_WIDTH  = getModel(   1 ),
-      WALL_HEIGHT = getModel( 2.5 ),
+float WALL_WIDTH  = 1,
+      WALL_HEIGHT = ( CANNON_HEIGHT / 4 ) * 3,
 
-      WALL_POSX   = CANNON_POSX + CANNON_WIDTH * 3,
-      WALL_POSY   = GROUND_POSY - WALL_HEIGHT;
+      WALL_POSX   = CANNON_POSX + CANNON_WIDTH + WALL_WIDTH * 2,
+      WALL_POSY   = WALL_HEIGHT;
 
 color WALL_COLOR  = #838053;
 
@@ -11,8 +11,9 @@ color WALL_COLOR  = #838053;
 // Constructor
 class Wall implements Element {
 
-  int posX,
-      left;
+  int posX;
+
+  boolean left;
 
   // ------------------------------------ //
 
@@ -26,9 +27,7 @@ class Wall implements Element {
 
   // ------------------------------------ //
 
-  void update ( float delta ) {
-
-  }
+  void update ( float delta ) {}
 
   // ------------------------------------ //
 
@@ -36,7 +35,7 @@ class Wall implements Element {
 
     fill( WALL_COLOR );
 
-    rect( posX, WALL_POSY, WALL_WIDTH, WALL_HEIGHT );
+    rect( drawX(posX), drawY(WALL_POSY), getModel(WALL_WIDTH), getModel(WALL_HEIGHT) );
   }
 
 }
