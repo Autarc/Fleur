@@ -10,16 +10,11 @@ color GROUND_COLOR    = #010D01;
 // Constructor
 class Ground implements Element {
 
-
   Ground(){}
-
 
   // ------------------------------------ //
 
-  void update( float delta ){
-
-
-  }
+  void update( float delta ){}
 
   // ------------------------------------ //
 
