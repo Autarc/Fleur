@@ -24,6 +24,26 @@ class ClickZone {
 }
 
 
+
+// ------------------------------------ //
+
+// configuration via mouse
+
+void onMove ( String which, int[] coords, Function callback ) {
+
+
+}
+
+
+// ------------------------------------ //
+
+// transition effects
+
+void onHover ( String which, int[] coords, Function callback ) {
+
+}
+
+
 // ------------------------------------ //
 
 ArrayList clickCommands = new ArrayList();
@@ -64,13 +84,22 @@ void mouseClicked(){
 
 // ------------------------------------ //
 
-HashMap keyCommands = new HashMap();
+HashMap pressedCommands   = new HashMap();
+HashMap releasedCommands  = new HashMap();
 
-void onKey( String which, Function callback ) {
 
-  keyCommands.put( which, callback );
+
+void onPress( String which, Function pressedCallback ) {
+
+  pressedCommands.put( which, pressedCallback );
 }
 
+void onRelease( String which, Function runningCallback, Function releasedCallback ) {
+
+  onPress( which, runningCallback );  // overwrites existing one !
+
+  releasedCommands.put( which, releasedCallback );
+}
 
 // ------------------------------------ //
 
@@ -81,7 +110,16 @@ void keyPressed(){
 
   currentKey = ( key != CODED && checkASCII( keyCode ) ) ? key : checkKey();
 
-  currentAction = keyCommands.get( currentKey );
+  currentAction = pressedCommands.get( currentKey );
+
+  if ( currentAction ) currentAction();
+}
+
+void keyReleased(){
+
+  currentKey = ( key != CODED && checkASCII( keyCode ) ) ? key : checkKey();
+
+  currentAction = releasedCommands.get( currentKey );
 
   if ( currentAction ) currentAction();
 }

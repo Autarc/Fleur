@@ -1,42 +1,31 @@
-// Configuration
+//
+int      BASE_OFFSET    = RANGE;
 
-int BASE_OFFSET = 10;
+int[]    PLAYER_POSX    = { - BASE_OFFSET, BASE_OFFSET };
 
-int[] PLAYER_POSX = {
-
-  BASE_OFFSET,
-  SCREEN_WIDTH - BASE_OFFSET
-};
-
-
-colors[] PLAYER_COLORS = {
-
-  #385E92,
-  #92383A
-};
-
-
+colors[] PLAYER_COLORS  = { #385E92, #92383A };
 
 
 
 // Constructor
 class Player implements Element {
 
-
-  int id,             // id of the player
-      playerPosX,     // x-offset
-      numElements;    // amount of elements
+  int id,               // id of the player
+      playerPosX,       // x-offset
+      numElements;      // amount of elements
 
   Elements[] elements;  // elements of the player
 
-  // internal references
-  Silo silo; Cannon cannon; Wall wall;
+  boolean active;
 
+  // internal references
+  Silo silo; Cannon cannon; Wall wall; Bullet bullet;
 
   // ------------------------------------ //
 
-
   Player ( int playerID ) {
+
+    active      = false;
 
     id          = playerID;
     playerPosX  = PLAYER_POSX[ id ];
@@ -44,38 +33,50 @@ class Player implements Element {
     this.init();
   }
 
-
   // ------------------------------------ //
 
 
   void init(){
 
-    silo    = new Silo    ( !id, playerPosX ); // e.g. 0 -> false -> ! -> true, first player -> left
-    cannon  = new Cannon  ( !id, playerPosX );
-    wall    = new Wall    ( !id, playerPosX );
-    bullet  = new Bullet  ();
+    // e.g. 0 -> false -> ! -> true, first player -> left
+    silo      = new Silo    ( !id, playerPosX );
+    cannon    = new Cannon  ( !id, playerPosX );
+    wall      = new Wall    ( !id, playerPosX );
+    bullet    = new Bullet  ();
 
-    elements = { bullet, wall, cannon, silo }; // reverse execution
+    elements = { bullet, wall, cannon, silo };
   }
+
+
+    void charge(){
+
+      if ( cannon.power >= MAX_POWER ) return;
+
+      int step = 2;
+
+      cannon.increasePower( step );
+      silo.reduceHeight( step );
+    }
 
 
     void shoot(){
 
+      FRAME_COUNTER = 0;
+
       bullet.init( cannon );
+
+      game.switchPlayers();
     }
 
   // ------------------------------------ //
 
-
-  void update(){
+  void update ( float delta ) {
 
     numElements = elements.length;
-    while ( numElements-- ) elements[ numElements ].update();
+    while ( numElements-- ) elements[ numElements ].update( delta );
   }
 
-
   // ------------------------------------ //
-
 
   void draw(){
 
@@ -85,9 +86,4 @@ class Player implements Element {
     while ( numElements-- ) elements[ numElements ].draw();
   }
 
-
 }
-
-
-// variables: ~ public
-// functions: this.

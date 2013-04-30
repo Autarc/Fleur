@@ -1,22 +1,5 @@
-// Configuration
-int   SCREEN_WIDTH    = 800,
-      SCREEN_HEIGHT   = 400,
-
-      FRAME_RATE      =  60,
-      FRAME_COUNTER   =   0,
-
-      SCALE_M         =  30;    // scale factor: 40px = 1m    = cannon: 2-3m
-
+// Configurations
 color GAME_COLOR_BACKGROUND = #eeeeee;
-
-
-
-
-// Difficulty
-int   DIFFICULTY_PLANTS = 3,
-      DIFFICULTY_TIME   = DIFFICULTY_PLANTS * 60;
-
-
 
 
 // Constructor
@@ -81,7 +64,7 @@ class Game {
 
       field = new Field();
 
-      elements = { field, cloud, new Ground() }; // reverse execution
+      elements = { field, cloud, new Ground() };
     }
 
 
@@ -120,19 +103,25 @@ class Game {
 
 
     // Keyboard:
-    onKey('ENTER', start );
-    onKey('1',     test_debug );
+    onPress('ENTER', start );
+    onPress('1',     test_debug );
 
-    onKey('LEFT',  test_left  );
-    onKey('RIGHT', test_right );
-    onKey('SPACE', test_space );
+    onPress('LEFT',  test_left  );
+    onPress('RIGHT', test_right );
+
+    onRelease('SPACE', test_charge, test_shoot );
   }
-
 
     void test_debug() { debug = !debug };
     void test_left()  { currentPlayer.cannon.decreaseAngle();  }
     void test_right() { currentPlayer.cannon.increaseAngle();  }
-    void test_space() { currentPlayer.shoot();                 }
+
+    void test_charge() {  currentPlayer.charge();    }
+    void test_shoot()  {  currentPlayer.shoot();    }
+
+
+
+
 
   // ------------------------------------ //
 
@@ -148,11 +137,13 @@ class Game {
 
   void render(){
 
+    TIME_COUNTER++;
     FRAME_COUNTER++;
 
-    float dt = frameCount;// 1/frameCount;
+    // time since beginning
+    float delta = getTime( 1/frameRate ) * FRAME_COUNTER;
 
-    update( dt );
+    update( delta );
 
     clear();
 
@@ -190,6 +181,19 @@ class Game {
 
   // ------------------------------------ //
 
+  void switchPlayers(){
+
+    currentPlayer = players[ ( currentPlayer.id == 0 ) ? 1 : 0 ];
+
+    currentPlayer.silo.init();
+
+    currentPlayer.cannon.setPower( DEFAULT_POWER );
+
+    currentPlayer.bullet.clearChanges();
+  }
+
+
+  // ------------------------------------ //
 
   void clear(){
 

@@ -45,27 +45,23 @@
 
             elements    =   [
 
-              '01_ground'   ,
-              '02_silo'     ,
-              '03_cannon'   ,
-              '04_wall'     ,
+              '00_ground'   ,
+              '01_silo'     ,
+              '02_cannon'   ,
+              '03_wall'     ,
+              '04_field'    ,
               '05_plant'    ,
-              '06_field'    ,
-              '07_cloud'    ,
-              '08_bullet'
+              '06_cloud'    ,
+              '07_bullet'
 
                             ].map( wrap('elements/') ),
 
             gui         =   [
 
-              '01_label'     ,
-              '02_button'    ,
-              '03_timer'     ,
-              '04_score'     ,
-
-              '05_angle'     ,
-              '06_pressure'  ,
-              '07_volume'
+              '01_label'    ,
+              '02_button'   ,
+              '03_timer'    ,
+              '04_score'
 
                             ].map( wrap('gui/') ),
 
@@ -74,11 +70,12 @@
 
                 '_element'  ,
                 '_gui'      ,
+                'const'     ,
                 'input'     ,
                 'game'      ,
                 'player'    ,
                 'menu'      ,
-                'helper'    ,
+                'utils'     ,
                 'debug'     ,
                 'main'
 
