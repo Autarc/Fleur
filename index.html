@@ -39,61 +39,67 @@
 
     <script src="vendors/processing-1.4.1.min.js"></script>
 
+    <script src="loader.js"></script>
+
     <script>
 
-        var canvas      = document.createElement('canvas'),
+      var canvas      = document.createElement('canvas'),
 
-            elements    =   [
+          elements    =   [
 
-              '00_ground'   ,
-              '01_silo'     ,
-              '02_cannon'   ,
-              '03_wall'     ,
-              '04_field'    ,
-              '05_plant'    ,
-              '06_cloud'    ,
-              '07_bullet'
+            '00_ground'   ,
+            '01_silo'     ,
+            '02_cannon'   ,
+            '03_wall'     ,
+            '04_field'    ,
+            '05_plant'    ,
+            '06_cloud'    ,
+            '07_bullet'
 
-                            ].map( wrap('elements/') ),
+                          ].map( wrap('elements/') ),
 
-            gui         =   [
+          gui         =   [
 
-              '01_label'    ,
-              '02_button'   ,
-              '03_timer'    ,
-              '04_score'
+            '01_label'    ,
+            '02_button'   ,
+            '03_timer'    ,
+            '04_score'
 
-                            ].map( wrap('gui/') ),
-
-
-            sketch      =   [
-
-                '_element'  ,
-                '_gui'      ,
-                'const'     ,
-                'input'     ,
-                'game'      ,
-                'player'    ,
-                'menu'      ,
-                'utils'     ,
-                'debug'     ,
-                'main'
-
-                            ].concat( elements )
-                             .concat( gui )
-                             .map( wrap( 'processing/', '.pde' ) )
-                             .join(' ');
+                          ].map( wrap('gui/') ),
 
 
-        canvas.dataset.processingSources = sketch;
+          sketch      =   [
 
-        document.getElementById('container').appendChild( canvas );
+              '_element'  ,
+              '_gui'      ,
+              'const'     ,
+              'input'     ,
+              'game'      ,
+              'player'    ,
+              'menu'      ,
+              'utils'     ,
+              'debug'     ,
+              'main'
+
+                          ].concat( elements )
+                           .concat( gui )
+                           .map( wrap( 'processing/', '.pde' ) );
 
 
-        function wrap ( prefix, suffix ) {
+      // just execute after asset loading
 
-            return function ( file ) { return [ prefix, file, suffix ].join(''); };
-        }
+      ready( function(){
+
+          Processing.loadSketchFromSources( canvas, sketch );
+
+          document.getElementById('container').appendChild( canvas );
+       });
+
+
+      function wrap ( prefix, suffix ) {
+
+          return function ( file ) { return [ prefix, file, suffix ].join(''); };
+      }
 
     </script>
 
