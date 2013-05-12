@@ -26,8 +26,14 @@ int   DIFFICULTY_PLANTS       =  3,
       DIFFICULTY_FILL_LOSS    =  5;       // fills/5 -> -1  ||
 
 
-int   DEFAULT_POWER           =   0,
-      MAX_POWER               = 200;
 
-float GRAVITY          = 9.81;    // ms / s²
+int   ANGLE_MIN               =  10,      // min. range (see Theory: Calulcation - #4 )
+      ANGLE_MAX               =  45,      // max. range (see Theory: Calculation - #2 )
+      DEFAULT_ANGLE           =  40,      // 30.0
+
+      DEFAULT_POWER           =   0,
+      MAX_POWER               =  93;      // see calculations
+
+
+float GRAVITY                 = 9.81;    // ms / s²
 
