@@ -9,7 +9,10 @@ float BEARING_RADIUS = 0.5,
       CANNON_POSY    = CANNON_HEIGHT + BEARING_RADIUS,
 
       POWER_OFFSET_X = 1,
-      POWER_OFFSET_Y = 1;
+      POWER_OFFSET_Y = 1,
+
+      RAD_OFFSET_X   = 2,
+      RAD_OFFSET_Y   = -3;
 
 color BEARING_COLOR  = #EBC52D,
       POWER_COLOR    = #000000;
@@ -22,7 +25,8 @@ class Cannon implements Element {
 
   int     posX, posY,
           bearingPosX, bearingPosY,
-          powerX, powerY;
+          powerX, powerY,
+          radX, radY;
 
   float   angleMax, angleMin,
           rad, power;
@@ -50,15 +54,21 @@ class Cannon implements Element {
     powerX = left ? posX + POWER_OFFSET_X                   :
                     posX - POWER_OFFSET_X;
 
-
     powerY = posY + POWER_OFFSET_Y;
 
 
-    // too rigid with just 30° ?
-    angleMin = side ? 15  : -45;
-    angleMax = side ? 45  : -15;
+    radX   = left ? posX + RAD_OFFSET_X                     :
+                    posX - RAD_OFFSET_X;
 
-    setAngle( 30.0 );
+    radY   = posY + RAD_OFFSET_Y;
+
+
+
+    // too rigid with just 30° ?
+    angleMin = side ? ANGLE_MIN : -ANGLE_MAX;
+    angleMax = side ? ANGLE_MAX : -ANGLE_MIN;
+
+    setAngle( DEFAULT_ANGLE );
     setPower( DEFAULT_POWER );
   }
 
@@ -79,6 +89,8 @@ class Cannon implements Element {
       step = degrees(rad) + step;
 
       if ( step > angleMax ) return;
+
+      // log(step + ' || ' + angleMax);
 
       rad = radians( step );
     }
@@ -113,13 +125,6 @@ class Cannon implements Element {
       power += step;
     }
 
-    // void decreasePower ( step ) {
-
-    //   if ( !step ) step = 2;
-
-    //   power -= step;
-    // }
-
 
   // ------------------------------------ //
 
@@ -129,11 +134,13 @@ class Cannon implements Element {
 
   void draw(){
 
+    fill( PLAYER_COLORS[ left ? 0 : 1 ] );
+
+    text( floor( abs( degrees(rad) ) + 0.5 ) + ' °', drawX( radX ), drawY( radY ) );
+
     pushMatrix();
 
       turn();
-
-      fill( PLAYER_COLORS[ left ? 0 : 1 ] );
 
       rect( drawX(posX), drawY(posY), getModel(CANNON_WIDTH), getModel(CANNON_HEIGHT) );
 
@@ -149,7 +156,7 @@ class Cannon implements Element {
 
     fill( POWER_COLOR );
 
-    text( power + ' m/s²', drawX( powerX ), drawY( powerY ) );
+    text( floor( sqrt(power) )+ ' m/s²', drawX( powerX ), drawY( powerY ) );
   }
 
 

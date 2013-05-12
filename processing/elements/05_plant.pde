@@ -46,7 +46,9 @@ class Plant implements Element {
 
     fill( PLANT_COLOR );
 
-    rect( drawX(posX), drawY(PLANT_POSY), getModel(width), getModel(PLANT_HEIGHT) );
+    // rect( drawX(posX), drawY(PLANT_POSY), getModel(width), getModel(PLANT_HEIGHT) );
+
+    image( IMAGE_PLANT, drawX(posX), drawY(PLANT_POSY + 0.7) );
   }
 
 }

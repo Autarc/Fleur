@@ -3,6 +3,11 @@ float	BULLET_RADIUS	= 0.5;       // 0.5m
 color	BULLET_COLOR	= #00CCFF;
 
 
+// distance between 2 points
+float CONTACT_CLOUD  = BULLET_RADIUS/2 + CLOUD_RADIUS/2,
+      CONTACT_GROUND = BULLET_RADIUS/2;
+
+
 // Constructor
 class Bullet implements Element {
 
@@ -10,7 +15,9 @@ class Bullet implements Element {
 
       radius,
 
-      endLength;
+      endLength,
+
+      dir, col;
 
   ArrayList stepListX, stepListY;
 
@@ -41,6 +48,9 @@ class Bullet implements Element {
       left  = cannon.left;
       rad   = cannon.rad;
 
+      dir  = 1;
+      col  = 0;
+
       // initial velocity
       float vel0 = sqrt( cannon.power );
 
@@ -51,6 +61,8 @@ class Bullet implements Element {
 
       create  = true;
       ready   = true;
+
+      tracks['bullet'].play();
     }
 
       // initial rotation around the bearing
@@ -81,7 +93,6 @@ class Bullet implements Element {
     definePath( delta );
 
     checkCollision();
-    checkOutOfScreen();
 	}
 
 
@@ -101,8 +112,10 @@ class Bullet implements Element {
 
     void definePath ( float delta ) {
 
-      posX = getPosX( delta );
+      posX = getPosX( delta ) * dir;
       posY = getPosY( delta );
+
+      if ( dir == -1 ) posX += col;
 
       stepListX.add( posX );
       stepListY.add( posY );
@@ -126,47 +139,99 @@ class Bullet implements Element {
 
     void checkCollision(){
 
-      if ( ! ( posX - radius < cloud.posX - cloud.radius ||
-               posX + radius > cloud.posX + cloud.radius ||
-               posY - radius < cloud.posY - cloud.radius ||
-               posY + radius > cloud.posY + cloud.radius   ) ) {
+      checkGround();
 
-        create = false;
+      checkCloud();
 
-        endLength = stepListX.size();
+      checkWall();
+    }
 
-        if ( game.field.plants[0].alive ) {
 
-           game.field.plants[0].hit();
+      void checkGround(){
 
-        } else if ( game.field.plants[1].alive ) {
+        if ( posY + radius/2 <= CONTACT_GROUND ) {
 
-          game.field.plants[1].hit();
+          showCollision();
+        }
+      }
 
-        } else {
 
-          game.field.plants[2].hit()
+      void checkCloud(){
+
+        float distance  = dist( posX, posY, cloud.posX, cloud.posY );
+
+        if ( distance <= CONTACT_CLOUD ) {
+
+          tracks['bullet'].pause();
+          tracks['cloud'].play();
+
+          create = false;
+
+          endLength = stepListX.size();
+
+          if ( game.field.plants[0].alive ) {
+
+             game.field.plants[0].hit();
+
+          } else if ( game.field.plants[1].alive ) {
+
+            game.field.plants[1].hit();
+
+          } else {
+
+            game.field.plants[2].hit()
+          }
         }
 
       }
-    }
 
+      void checkWall(){
 
-    // prevent rendering (negotiation didn't worked...)
-    void checkOutOfScreen(){
+        int x1Wall = game.players[ game.currentPlayer.id == 0 ? 1 : 0 ].wall.posX,  // own
+            x2Wall = game.currentPlayer.wall.posX,                                  // other
+            yWall  = WALL_HEIGHT;
 
-      if (  posX          < -( RANGE + 1 )  ||
-            posX          >    RANGE + 1    ||
-            posY          < 0               ||
-            posY + radius > WORLD_HEIGHT       ) {
+        // reflection
+        if ( posY - radius/2 <= yWall ) {
 
-        // ToDo: print label "miss"
+          if ( !game.currentPlayer.cannon.left ) {
 
-        clearChanges();
+            if ( posX + radius/2 <= x1Wall + WALL_WIDTH ) showCollision(); // own
+            if ( posX + radius/2 >= x2Wall )              reflectX();     // other
+
+          } else {
+
+            // posX - radius/2 < x1Wall &&
+            if ( posX - radius/2 >= x1Wall - WALL_WIDTH ) showCollision(); // own
+            if ( posX - radius/2 <= x2Wall + WALL_WIDTH ) reflectX();     // other
+          }
+        }
+
       }
-    }
+
+        // wall
+        void reflectX(){
+
+          tracks['bullet'].pause();
+          tracks['wall'].play();
+
+          col = 2 * posX;
+          dir = -1;
+        }
 
   // ------------------------------------ //
+
+
+    void showCollision(){
+
+      log(' x: ' + floor(posX) + ' | y: ' + floor(posY) );
+
+      tracks['bullet'].pause();
+      tracks['ground'].play();
+
+      clearChanges();
+    }
+
 
     void clearChanges(){
 

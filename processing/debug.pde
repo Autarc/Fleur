@@ -1,6 +1,6 @@
 // Configuration
 
-boolean debug = false;
+boolean debug = !false;
 
 // debug setup
 if ( debug ) println("[Debug]\n\n");

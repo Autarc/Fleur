@@ -50,6 +50,7 @@ class Player implements Element {
 
     void charge(){
 
+      // keep power in range
       if ( cannon.power >= MAX_POWER ) return;
 
       int step = 2;
@@ -66,6 +67,8 @@ class Player implements Element {
       bullet.init( cannon );
 
       game.switchPlayers();
+
+      // getMaxPower();
     }
 
   // ------------------------------------ //
@@ -85,5 +88,36 @@ class Player implements Element {
     numElements = elements.length;
     while ( numElements-- ) elements[ numElements ].draw();
   }
+
+  // ------------------------------------ //
+
+  // implementated calculation for v0-max
+  void getMaxPower(){
+
+      Player current = game.players[ 0 ],
+             next    = game.players[ 1 ];
+
+      int dx  = current.cannon.posX + current.bullet.radius - current.cannon.bearingPosX,
+          dy  = current.cannon.posY                         - current.cannon.bearingPosY;
+          deg = 45.0;
+
+
+      float bulletPosX = cos( deg ) * dx + sin( deg ) * dy + current.cannon.bearingPosX,  // ~ -6
+
+            wallPosX = next.wall.posX;                                                    // 4
+
+            distance = wallPosX - bulletPosX - current.bullet.radius - 1;                 // ~ 9.5
+
+            maxPower = distance * GRAVITY / sin( 2 * deg );                               // ~ 104
+
+      log(maxPower);
+  }
+
+  void getMinPower(){
+
+
+
+  }
+
 
 }
