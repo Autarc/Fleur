@@ -27,7 +27,7 @@
         .wrapper {
 
             width   : 60%;
-            margin  : 100px auto;
+            margin  : 10px auto;  /* 100 */
         }
 
     </style>
@@ -48,13 +48,15 @@
           elements    =   [
 
             '00_ground'   ,
-            '01_silo'     ,
-            '02_cannon'   ,
-            '03_wall'     ,
-            '04_field'    ,
-            '05_plant'    ,
-            '06_cloud'    ,
-            '07_bullet'
+            '01_cart'     ,
+            '02_silo'     ,
+            '03_cannon'   ,
+            '04_wall'     ,
+            '05_field'    ,
+            '06_plant'    ,
+            '07_cloud'    ,
+            '08_water'    ,
+            '09_bullet'
 
                           ].map( wrap('elements/') ),
 
@@ -86,8 +88,9 @@
                            .map( wrap( 'processing/', '.pde' ) );
 
 
-      // just execute after asset loading
+      loading( function( perc ) {   console.log('[Progress] ' + perc );  });
 
+      // wait for execution after asset loading
       ready( function(){
 
           Processing.loadSketchFromSources( canvas, sketch );
@@ -98,7 +101,7 @@
 
       function wrap ( prefix, suffix ) {
 
-          return function ( file ) { return [ prefix, file, suffix ].join(''); };
+        return function ( file ) { return [ prefix, file, suffix ].join(''); };
       }
 
     </script>

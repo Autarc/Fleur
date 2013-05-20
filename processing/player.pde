@@ -16,16 +16,12 @@ class Player implements Element {
 
   Elements[] elements;  // elements of the player
 
-  boolean active;
-
   // internal references
-  Silo silo; Cannon cannon; Wall wall; Bullet bullet;
+  Cart cart; Silo silo; Cannon cannon; Wall wall; Water water;
 
   // ------------------------------------ //
 
   Player ( int playerID ) {
-
-    active      = false;
 
     id          = playerID;
     playerPosX  = PLAYER_POSX[ id ];
@@ -39,37 +35,44 @@ class Player implements Element {
   void init(){
 
     // e.g. 0 -> false -> ! -> true, first player -> left
-    silo      = new Silo    ( !id, playerPosX );
-    cannon    = new Cannon  ( !id, playerPosX );
-    wall      = new Wall    ( !id, playerPosX );
-    bullet    = new Bullet  ();
+    cart       = new Cart    ( !id, playerPosX );
+    silo       = new Silo    ( !id, playerPosX );
+    cannon     = new Cannon  ( !id, playerPosX, id );
+    wall       = new Wall    ( !id, playerPosX );
 
-    elements = { bullet, wall, cannon, silo };
+    water      = new Water   ( cannon );
+
+    elements = { water, wall, cannon, silo, cart };
   }
 
 
-    void charge(){
+  // ------------------------------------ //
 
-      // keep power in range
-      if ( cannon.power >= MAX_POWER ) return;
+  void charge(){
 
-      int step = 2;
+    // keep power in range
+    if ( cannon.power >= MAX_POWER ) return;
 
-      cannon.increasePower( step );
-      silo.reduceHeight( step );
-    }
+    int step = INCREMENT_POWER;
+
+    cannon.increasePower( step );
+    silo.reduceHeight( step );
+  }
 
 
-    void shoot(){
+  void shoot(){
 
-      FRAME_COUNTER = 0;
+    FRAME_COUNTER   = 0;
 
-      bullet.init( cannon );
+    cannon.charging = false;
+    cannon.duration = 0;
 
-      game.switchPlayers();
+    water.init();
 
-      // getMaxPower();
-    }
+    game.switchPlayers();
+
+    // getMaxPower();
+  }
 
   // ------------------------------------ //
 
@@ -91,33 +94,28 @@ class Player implements Element {
 
   // ------------------------------------ //
 
-  // implementated calculation for v0-max
+  // maxPower != max v0 -> would be 93...
+
   void getMaxPower(){
 
-      Player current = game.players[ 0 ],
-             next    = game.players[ 1 ];
+    // Player current = game.players[ 0 ],
+    //        next    = game.players[ 1 ];
 
-      int dx  = current.cannon.posX + current.bullet.radius - current.cannon.bearingPosX,
-          dy  = current.cannon.posY                         - current.cannon.bearingPosY;
-          deg = 45.0;
+    // int dx  = current.cannon.posX + BULLET_RADIUS - current.cannon.bearingPosX,
+    //     dy  = current.cannon.posY                 - current.cannon.bearingPosY;
+    //     deg = 45.0;
 
 
-      float bulletPosX = cos( deg ) * dx + sin( deg ) * dy + current.cannon.bearingPosX,  // ~ -6
+    // float bulletPosX = cos( deg ) * dx + sin( deg ) * dy + current.cannon.bearingPosX,  // ~ -6
 
-            wallPosX = next.wall.posX;                                                    // 4
+    //       wallPosX = next.wall.posX;                                                    // 4
 
-            distance = wallPosX - bulletPosX - current.bullet.radius - 1;                 // ~ 9.5
+    //       distance = wallPosX - bulletPosX - BULLET_RADIUS - 1;                 // ~ 9.5
 
-            maxPower = distance * GRAVITY / sin( 2 * deg );                               // ~ 104
+    //       maxPower = distance * GRAVITY / sin( 2 * deg );                               // ~ 104
 
-      log(maxPower);
+    // log(maxPower);
   }
-
-  void getMinPower(){
-
-
-
-  }
-
 
 }
+
