@@ -1,9 +1,9 @@
 var tracks = {
 
-    ground  : '166823__quistard__water-drop-big.wav',
-    wall    : '81258__jesterdyne__splash2-hi.wav',
-    cloud   : '166158__adam-n__slurp.wav',
-    bullet  : '95087__nicstage__pewitswater2.wav'
+    ground  : 'surface.ogg',      //'166823__quistard__water-drop-big.wav',
+    wall    : 'reflection.ogg',   //'81258__jesterdyne__splash2-hi.wav',
+    cloud   : 'vortex.ogg',       //'166158__adam-n__slurp.wav',
+    bullet  : 'water.ogg'         //'95087__nicstage__pewitswater2.wav'
 
   },
 
@@ -17,15 +17,17 @@ if ( !window.URL ) window.URL = window.webkitURL || window.msURL || window.oURL;
 
 //----------------------------------------------------------//
 
-var entries = Object.keys( tracks ),
+var entries   = Object.keys( tracks ),
 
-    length  = entries.length,
+    pending   = entries.length,
 
-    pending = length,
+    percent   = 0,
 
-    callback;
+    step      = 1/pending * 100,
 
-for ( var i = 0; i < length; i++ ) request( entries[i] );
+    callbackProgress, callbackReady;
+
+for ( var i = 0, l = pending; i < l; i++ ) request( entries[i] );
 
 
 function request ( key ) {
@@ -44,21 +46,39 @@ function request ( key ) {
 
 function loaded ( key, data ) {
 
-  var url   = URL.createObjectURL( data ),
+  var url = URL.createObjectURL( data );
 
-      track = new Audio( url );
+  // make sure data URL exists
+  setTimeout(function(){
 
-  if ( ~loop.indexOf(key) ) track.loop = true;
+    new Audio( url ).addEventListener( 'canplay' , function storeTrack(){
 
-  tracks[ key ] = track;
+      this.removeEventListener( 'canplay', storeTrack );
 
-  if ( ! --pending && typeof callback === 'function' ) callback();
+      URL.revokeObjectURL( url );
+
+      if ( ~loop.indexOf(key) ) this.loop = true;
+
+      tracks[ key ] = this;
+
+      callbackProgress( percent += step );
+
+      if ( ! --pending && typeof callbackReady === 'function' ) callbackReady();
+    });
+
+  }, 16.7 );
+}
+
+
+function loading ( progress ) {
+
+  callbackProgress = progress;
 }
 
 
 function ready ( init ) {
 
-  callback = init;
+  callbackReady = init;
 
-  if ( !pending ) callback();
+  if ( !pending ) callbackReady();
 }
