@@ -187,9 +187,10 @@ class Game {
 
     currentPlayer.silo.init();
 
+    // after a shot - reset + disable charging of old player !
     currentPlayer.cannon.setPower( DEFAULT_POWER );
 
-    currentPlayer.bullet.clearChanges();
+    currentPlayer.water.clearBullets();
   }
 
 

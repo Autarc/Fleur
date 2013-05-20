@@ -2,7 +2,7 @@
 float CLOUD_RADIUS  = 2,                                // 2m
 
       CLOUD_CENTERX = 0,
-      CLOUD_CENTERY = WORLD_HEIGHT - CLOUD_RADIUS * 2.5;
+      CLOUD_CENTERY = WORLD_HEIGHT - CLOUD_RADIUS * 2;//2.5;
 
 
 color CLOUD_COLOR   = #698AEC,
@@ -81,7 +81,7 @@ class Cloud implements Element {
 
     fill( CLOUD_COLOR );
 
-    // ellipse( drawX(posX), drawY(posY), getModel(radius), getModel(radius) );
+    ellipse( drawX(posX), drawY(posY), getModel(radius), getModel(radius) );
 
     fill( VOLUME_COLOR );
 
